@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# Start SSH service
+service ssh start
+
+# Pre-accept SSH host keys to avoid prompts
+ssh-keyscan -H localhost >> ~/.ssh/known_hosts 2>/dev/null
+ssh-keyscan -H 127.0.0.1 >> ~/.ssh/known_hosts 2>/dev/null
+ssh-keyscan -H 0.0.0.0 >> ~/.ssh/known_hosts 2>/dev/null
+
+# Format namenode if it hasn't been formatted
+if [ ! -d "/data/hadoop/hdfs/namenode/current" ]; then
+    echo "Formatting namenode..."
+    $HADOOP_HOME/bin/hdfs namenode -format -force
+fi
+
+# Start Hadoop services
+echo "Starting Hadoop services..."
+$HADOOP_HOME/sbin/start-dfs.sh
+$HADOOP_HOME/sbin/start-yarn.sh
+
+# Wait for HDFS to be ready
+echo "Waiting for HDFS to be ready..."
+sleep 5
+
+# Create HBase directory in HDFS if it doesn't exist
+$HADOOP_HOME/bin/hdfs dfs -mkdir -p /hbase
+
+# Start HBase
+echo "Starting HBase..."
+$HBASE_HOME/bin/start-hbase.sh
+
+echo "All services started. Hadoop Web UI: http://localhost:9870, HBase Web UI: http://localhost:16010"
+
+# Keep container running
+tail -f $HADOOP_HOME/logs/*.log $HBASE_HOME/logs/*.log

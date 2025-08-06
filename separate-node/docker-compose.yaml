@@ -1,0 +1,64 @@
+version: "2"
+services:
+   namenode:
+      image: apache/hadoop:3
+      hostname: namenode
+      command: ["hdfs", "namenode"]
+      ports:
+        - 9870:9870
+      env_file:
+        - ./config
+      environment:
+          ENSURE_NAMENODE_DIR: "/tmp/hadoop-root/dfs/name"
+   datanode:
+      image: apache/hadoop:3
+      command: ["hdfs", "datanode"]
+      env_file:
+        - ./config      
+   resourcemanager:
+      image: apache/hadoop:3
+      hostname: resourcemanager
+      command: ["yarn", "resourcemanager"]
+      ports:
+         - 8088:8088
+      env_file:
+        - ./config
+      volumes:
+        - ./test.sh:/opt/test.sh
+   nodemanager:
+      image: apache/hadoop:3
+      command: ["yarn", "nodemanager"]
+      env_file:
+        - ./config
+        
+   # HBase Configuration
+   zookeeper:
+      image: zookeeper:3.8
+      hostname: zookeeper
+      ports:
+        - "2181:2181"
+      environment:
+        ZOO_MY_ID: 1
+        ZOO_SERVERS: server.1=0.0.0.0:2888:3888;2181
+        
+   hbase-master:
+      build: ./hbase
+      hostname: hbase-master
+      depends_on:
+        - namenode
+        - zookeeper
+      ports:
+        - "16010:16010"
+      env_file:
+        - ./config
+      command: ["hbase", "master", "start"]
+      
+   hbase-regionserver:
+      build: ./hbase
+      depends_on:
+        - hbase-master
+      ports:
+        - "16030:16030" 
+      env_file:
+        - ./config
+      command: ["hbase", "regionserver", "start"]
