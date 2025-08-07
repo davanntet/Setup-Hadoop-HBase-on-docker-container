@@ -14,15 +14,15 @@
         <value>/data/hadoop/hdfs/datanode</value>
     </property>
     <property>
-        <name>dfs.namenode.http-address</name>
-        <value>0.0.0.0:9870</value>
+        <name>dfs.datanode.ipc.address</name>
+        <value>0.0.0.0:9000</value>
     </property>
     <property>
-        <name>dfs.namenode.secondary.http-address</name>
-        <value>0.0.0.0:9868</value>
+        <name>dfs.datanode.hostname</name>
+        <value>${HOST_IP}</value>
     </property>
     <property>
-        <name>dfs.permissions.enabled</name>
-        <value>false</value>
+        <name>dfs.namenode.hostname</name>
+        <value>localhost</value>
     </property>
 </configuration>

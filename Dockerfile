@@ -2,8 +2,8 @@ FROM ubuntu:24.04
 
 # Set environment variables
 ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
-ENV HADOOP_VERSION=3.4.1
-ENV HBASE_VERSION=2.6.3
+ENV HADOOP_VERSION=3.3.4
+ENV HBASE_VERSION=2.4.18
 ENV HADOOP_HOME=/opt/hadoop
 ENV HBASE_HOME=/opt/hbase
 ENV HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
@@ -52,9 +52,13 @@ COPY hbase-config/* $HBASE_CONF_DIR/
 
 # Set permissions
 RUN chmod +x ${HADOOP_HOME}/sbin/* && \
-    chmod +x ${HBASE_HOME}/bin/*
+    chmod +x ${HBASE_HOME}/bin/* && \
+    chmod -R 777 /data/hadoop/hdfs && \
+    chmod -R 777 /data/hadoop/hdfs/namenode && \
+    chmod -R 777 /data/hadoop/hdfs/datanode
 RUN apt update && \
     apt install sudo -y && \
+    apt-get install -y iproute2 && \
     rm -rf /var/lib/apt/lists/*
 
 RUN rm -f ${HBASE_HOME}/lib/client-facing-thirdparty/log4j-slf4j-impl-2.17.2.jar

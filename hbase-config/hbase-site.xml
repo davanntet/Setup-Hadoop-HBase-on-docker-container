@@ -17,7 +17,7 @@
         <name>hbase.manages.zookeeper</name>
         <value>true</value>
     </property>
-    <!-- <property>
+    <property>
         <name>hbase.zookeeper.property.dataDir</name>
         <value>/tmp/zookeeper</value>
     </property>
@@ -40,5 +40,5 @@
     <property>
         <name>hbase.unsafe.stream.capability.enforce</name>
         <value>false</value>
-    </property> -->
+    </property>
 </configuration>

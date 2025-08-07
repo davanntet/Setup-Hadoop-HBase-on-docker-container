@@ -1,0 +1,62 @@
+# services:
+#   hadoop-hbase:
+#     build: .
+#     environment: 
+#       - HOST_IP=${PUBLIC_IP}
+#     image: hadoop-hbase-lts:latest
+#     container_name: hadoop-hbase
+#     mem_limit: 4g
+#     cpus: 0.90
+#     volumes:
+#       - hdfs-namenode:/data/hadoop/hdfs/namenode
+#       - hdfs-datanode:/data/hadoop/hdfs/datanode
+#     ports:
+#       - "16010:16010"  # HBase Master UI
+#       - "2181:2181"    # ZooKeeper 
+#       - "9870:9870"    # Hadoop NameNode UI
+#       - "9000:9000"    # HDFS NameNode
+#       - "8088:8088"    # YARN ResourceManager UI
+#       - "8042:8042"    # YARN NodeManager UI
+#       - "19888:19888"
+#       - "9864:9864"
+#     tty: true
+
+# volumes:
+#   hdfs-namenode:
+#     name: hdfs-namenode
+#     driver: local
+#   hdfs-datanode:
+#     name: hdfs-datanode
+#     driver: local
+
+services:
+  hadoop-hbase:
+    build: .
+    environment: 
+      - HOST_IP=${PUBLIC_IP}
+    image: hadoop-hbase-lts:latest
+    container_name: hadoop-hbase
+    hostname: hadoop-hbase
+    mem_limit: 4g
+    # cpus: 0.90
+    volumes:
+      - hdfs:/data/hadoop/hdfs
+      - zookeeper:/tmp/zookeeper
+    ports:
+      - "16010:16010"  # HBase Master UI
+      - "2181:2181"    # ZooKeeper 
+      - "9870:9870"    # Hadoop NameNode UI
+      - "9000:9000"    # HDFS NameNode
+      - "8088:8088"    # YARN ResourceManager UI
+      - "8042:8042"    # YARN NodeManager UI
+      - "19888:19888"
+      - "9864:9864"
+    tty: true
+
+volumes:
+  hdfs:
+    name: hdfs
+    driver: local
+  zookeeper:
+    name: zookeeper
+    driver: local
