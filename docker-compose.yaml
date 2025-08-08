@@ -52,6 +52,8 @@ services:
       - "8042:8042"    # YARN NodeManager UI
       - "19888:19888"
       - "9864:9864"
+      - "16020:16020"  # HBase RegionServer UI
+      - "16030:16030"  # HBase Master UI
     tty: true
 
 volumes:
