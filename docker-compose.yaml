@@ -34,10 +34,11 @@ services:
     build: .
     environment: 
       - HOST_IP=${PUBLIC_IP}
+      - HOSTNAME=hadoop-hbase
     image: hadoop-hbase-lts:latest
     container_name: hadoop-hbase
     hostname: hadoop-hbase
-    mem_limit: 4g
+    mem_limit: 6g
     # cpus: 0.90
     volumes:
       - hdfs:/data/hadoop/hdfs

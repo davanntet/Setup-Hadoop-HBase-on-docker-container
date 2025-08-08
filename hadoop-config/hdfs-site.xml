@@ -13,10 +13,10 @@
         <name>dfs.datanode.data.dir</name>
         <value>/data/hadoop/hdfs/datanode</value>
     </property>
-    <property>
+    <!-- <property>
         <name>dfs.datanode.ipc.address</name>
         <value>0.0.0.0:9000</value>
-    </property>
+    </property> -->
     <property>
         <name>dfs.datanode.hostname</name>
         <value>${HOST_IP}</value>

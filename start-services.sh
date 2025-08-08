@@ -2,13 +2,6 @@
 
 # Start SSH service
 service ssh start
-# check $HOST_IP environment variable
-# HOST_IP=${HOST_IP:-$(hostname -i | awk '{print $1}')}
-# HOST_IP=192.168.7.151
-# sed -i "s|\${HOST_IP}|$HOST_IP|" $HADOOP_HOME/etc/hadoop/hdfs-site.xml
-# sed -i "s|\${HOST_IP}|$HOST_IP|" $HADOOP_HOME/etc/hadoop/core-site.xml
-# sed -i "s|\${HOST_IP}|$HOST_IP|" $HBASE_HOME/conf/hbase-site.xml
-
 if [ -z "$HOST_IP" ]; then
     HOST_IP=localhost
 fi
@@ -24,7 +17,7 @@ echo "Using HOST_IP: $HOST_IP"
 ssh-keyscan -H localhost >> ~/.ssh/known_hosts 2>/dev/null
 ssh-keyscan -H 127.0.0.1 >> ~/.ssh/known_hosts 2>/dev/null
 ssh-keyscan -H 0.0.0.0 >> ~/.ssh/known_hosts 2>/dev/null
-ssh-keyscan -H 
+ssh-keyscan -H ${HOSTNAME} >> ~/.ssh/known_hosts 2>/dev/null
 # Format namenode if it hasn't been formatted
 if [ ! -d "/data/hadoop/hdfs/namenode/current" ]; then
     echo "Formatting namenode..."
@@ -38,6 +31,8 @@ $HADOOP_HOME/sbin/start-yarn.sh
 
 # Wait for HDFS to be ready
 echo "Waiting for HDFS to be ready..."
+hdfs dfsadmin -safemode leave
+hdfs dfs -chmod 777 /
 sleep 5
 
 # Create HBase directory in HDFS if it doesn't exist
