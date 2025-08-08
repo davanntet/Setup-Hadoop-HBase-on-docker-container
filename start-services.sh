@@ -41,7 +41,10 @@ $HADOOP_HOME/bin/hdfs dfs -mkdir -p /hbase
 # Start HBase
 echo "Starting HBase..."
 $HBASE_HOME/bin/start-hbase.sh
-
+# Wait for HBase to be ready
+echo "Waiting for HBase to be ready..."
+sleep 5
+hbase thrift start &
 echo "All services started. Hadoop Web UI: http://localhost:9870, HBase Web UI: http://localhost:16010"
 
 # Keep container running

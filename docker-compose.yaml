@@ -54,6 +54,7 @@ services:
       - "9864:9864"
       - "16020:16020"  # HBase RegionServer UI
       - "16030:16030"  # HBase Master UI
+      - "9090:9090"    # HBase Thrift Server
     tty: true
 
 volumes:

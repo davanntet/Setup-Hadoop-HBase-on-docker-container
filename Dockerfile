@@ -66,7 +66,7 @@ RUN rm -f ${HBASE_HOME}/lib/client-facing-thirdparty/log4j-slf4j-impl-2.17.2.jar
 # Hadoop ports
 EXPOSE 9870 9000 8088 8042 19888 9864
 # HBase ports
-EXPOSE 16010 16020 16030 2181
+EXPOSE 16010 16020 16030 2181 9090
 
 # Create startup script
 COPY start-services.sh /start-services.sh
